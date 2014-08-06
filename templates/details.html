@@ -1,0 +1,38 @@
+<ion-view>
+	<ion-nav-buttons side="left">
+		<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+	</ion-nav-buttons>
+
+	<ion-nav-buttons side="right">
+		<button class="button button-icon icon ion-star" ng-class="{ favorite: favorite }" ng-click="toggleFavorite()"></button>
+		<button class="button" ng-click="navigate('details/series/'+seriesID)" ng-if="category == 'comics'">series</button>
+	</ion-nav-buttons>
+
+	<ion-content ng-init="init()" class="transparent-header" delegate-handle="small" on-scroll="scroll()">
+
+		<!-- HEADER IMAGE -->
+		<div class="header-image">
+			<span class="background" ng-style="{backgroundImage: 'url('+itemData.image+')'}"></span>
+			<h1 class="center"><span ng-if="!itemData.title && !itemData.name"><i class="ion-loading-d normal"></i></span>{{itemData.title||itemData.name}}</h1>
+		</div>
+
+		<!-- DESCRIPTION -->
+		<div ng-if="itemData.description.length > 0" class="padding">
+			<p class="large" ng-bind-html="itemData.descriptionHTML"></p>
+		</div>
+
+		<div class="padding" ng-if="category == 'comics'">
+			<p class="large">This comic is part of the '{{itemData.series.name}}' series.</p>
+		</div>
+
+		<div class="list padding">
+
+		  <a class="item" ng-click="navigate(list.allPath)" ng-repeat="list in lists">
+		    {{itemData[list.name].available}} {{list.name}}
+		    <span class="button-hollow right">All {{list.name}}</span>
+		  </a>
+
+		</div>
+
+	</ion-content>
+</ion-view>

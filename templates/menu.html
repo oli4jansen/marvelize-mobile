@@ -1,0 +1,48 @@
+<ion-side-menus>
+
+  <ion-pane ion-side-menu-content>
+    <ion-nav-bar class="bar-stable no-animation" animation="no-animation" ng-class="{ transparent: transparentNavBar }">
+    </ion-nav-bar>
+
+    <div class="tabs-top" ng-if="showCategoryTabs" drag-content="false">
+      <a ng-click="changeCategory('characters')" ng-class="{ active: category == 'characters' }">Characters</a>
+      <a ng-click="changeCategory('comics')" ng-class="{ active: category == 'comics' }">Comics</a>
+      <a ng-click="changeCategory('series')" ng-class="{ active: category == 'series' }">Series</a>
+      <a ng-click="changeCategory('events')" ng-class="{ active: category == 'events' }">Events</a>
+    </div>
+
+    <ion-nav-view name="menuContent" animation="no-animation"></ion-nav-view>
+  </ion-pane>
+
+  <ion-side-menu side="left">
+    <ion-content>
+
+      <div class="list">
+
+        <form ng-submit="search(query)">
+          <label class="item item-input">
+            <i class="icon ion-search placeholder-icon"></i>
+              <input type="text" placeholder="Search" ng-model="query" ng-disabled="searchDisabled">
+          </label>
+        </form>
+
+        <div class="item item-divider">Browse</div>
+        <a menu-close class="item item-divided" href="#/app/browse/characters">Characters</a>
+        <a menu-close class="item item-divided" href="#/app/browse/comics">Comics</a>
+        <a menu-close class="item item-divided" href="#/app/browse/series">Series</a>
+        <a menu-close class="item item-divided" href="#/app/browse/events">Events</a>
+
+        <div class="item item-divider">Favorites</div>
+
+        <ion-list class="small">
+          <div ng-repeat="favorite in favorites" ng-click="navigate('details/'+favorite.type+'/'+favorite.id)" class="item custom-list-item item-thumbnail-left">
+            <img ng-src="{{favorite.image}}">
+            <h2>{{favorite.title}}</h2>
+            <p>in {{favorite.type}}</p>
+          </div>
+        </ion-list>
+      </div>
+
+    </ion-content>
+  </ion-side-menu>
+</ion-side-menus>

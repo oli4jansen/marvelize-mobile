@@ -1,0 +1,20 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+
+  <ion-content class="has-header" ng-init="init()" ng-class="{ hasTabsTop: showCategoryTabs }">
+
+	<ion-list>
+		<div ng-click="details(item)" class="item custom-list-item item-thumbnail-left" collection-repeat="item in items" collection-item-width="'100%'" collection-item-height="110" ng-style="{height: getItemHeight(item, $index)}">
+			<img ng-src="{{item.image}}">
+			<h2>{{item.title}}</h2>
+			<p>{{item.description}}</p>
+		</div>
+	</ion-list>
+
+	<ion-infinite-scroll icon="none" on-infinite="getMoreItemsPlease()" distance="20%"></ion-infinite-scroll>
+
+  </ion-content>
+</ion-view>
+
