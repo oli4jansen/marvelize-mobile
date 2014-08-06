@@ -88,6 +88,7 @@ ion-side-menu .list .item-divider { font-weight: 400; padding-top: 10px; padding
 ion-side-menu .list .item-divided { padding: 10px 10px 10px 35px; margin: 0; height: 52px; font-weight: 300; }
 ion-side-menu .list .item-input { background-color: rgba(255,255,255,0.15); margin: 10px; margin-bottom: 15px; }
 ion-side-menu .list .item-input input { font-size: 18px; line-height: 20px; color: white; }
+ion-side-menu .list .item-input input[disabled] { background-color: transparent; }
 ion-side-menu .list .item-input .icon { font-size: 18px; min-width: 18px; color: rgba(255,255,255,0.75); }
 
 .nav-title-slide-ios7 {
