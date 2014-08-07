@@ -6,9 +6,6 @@
 }
 .menu-left ion-content { background: #c41411; }
 
-.dark-theme .menu-left ion-content { background: #232631; }
-.dark-theme .bar.bar-stable { background: #232631; }
-
 .popup-buttons .button.button-positive { color: #c41411 !important; }
 
 .bar .right-buttons { background-color: #dd191d; }

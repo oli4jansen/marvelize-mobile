@@ -35,6 +35,8 @@ p.large { font-size: 17px; font-weight: 300; line-height: 26px; }
 	color: white;
 }
 
+.item { background-color: transparent; }
+
 .button {
 	background-color: white;
 	color: #444;
@@ -292,12 +294,36 @@ ion-radio
 	margin: 3px 0;
 }
 .item-radio .item-content { background: transparent !important; }
-
 .item-radio .radio-icon { left: 0; }
+.item-radio input:checked ~ .radio-icon:before { background: rgba(0,0,0,0.5); }
 
-.item-radio input:checked ~ .radio-icon:before {
-	background: rgba(0,0,0,0.5);
+/*
+dark theme
+*/
+
+.dark-theme ion-header-bar,
+.dark-theme ion-content {
+	background: #444444;
+	box-shadow: none;
+	border: 0;
+	color: #666;
 }
+.dark-theme ion-header-bar .title { color: white; left: 10px; }
+
+.dark-theme .item-radio .item-content span { color: #999; }
+
+.dark-theme .item-radio input ~ .radio-icon:before {
+	background: transparent;
+	border-radius: 100px;
+	border: 2px solid #444444;
+	box-shadow: 0 0 0 3px rgba(255,255,255,0.5);
+	margin: 3px 0;
+}
+.dark-theme .item-radio input:checked ~ .radio-icon:before { background: white; box-shadow: 0 0 0 3px white; }
+.dark-theme .item-radio input:checked ~ .item-content span { color: white; }
+.dark-theme hr { border-color: #666; }
+
+ion-modal-view .bar .button .icon:before { font-size: 16px !important; color: white; margin: 5px 15px 0 0; }
 
 
 .spinner { display: block; text-align: center; margin: 15px auto; font-size: 34px; }

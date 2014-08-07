@@ -32,23 +32,23 @@
 </ion-view>
 
 <script id="my-modal.html" type="text/ng-template">
-	<ion-modal-view>
+	<ion-modal-view class="dark-theme">
 		<ion-header-bar>
 			<h1 class="title">List settings</h1>
-			<div class="button button-clear" ng-click="modal.hide()"><span class="icon ion-close"></span></div>
+			<div class="button button-clear" ng-click="modal.hide()"><span class="icon ion-android-close"></span></div>
 		</ion-header-bar>
 		<ion-content>
 			<div class="padding">
 				<form>
 					<h6>Order by</h6>
-					<ion-radio ng-model="order" ng-value="'name'">Name</ion-radio>
-					<ion-radio ng-model="order" ng-value="'modified'">Date modified</ion-radio>
+					<ion-radio name="order" ng-model="order" ng-value="'name'">Name</ion-radio>
+					<ion-radio name="order" ng-model="order" ng-value="'modified'">Date modified</ion-radio>
 					<hr>
 
 					<h6>List style</h6>
-					<ion-radio ng-model="listStyle" ng-value="'name'">Compact</ion-radio>
-					<ion-radio ng-model="listStyle" ng-value="'modified'">Thumbnail</ion-radio>
-					<ion-radio ng-model="listStyle" ng-value="'modified'">Grid</ion-radio>
+					<ion-radio name="listStyle" ng-model="listStyle" ng-value="'compact'">Compact</ion-radio>
+					<ion-radio name="listStyle" ng-model="listStyle" ng-value="'thumbnail'">Thumbnail</ion-radio>
+					<ion-radio name="listStyle" ng-model="listStyle" ng-value="'grid'">Grid</ion-radio>
 				</form>
 			</div>
 		</ion-content>
