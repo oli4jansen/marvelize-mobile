@@ -232,7 +232,7 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
 })
 
 // Controller voor lijsten (wordt gebruikt om te browsen, zoeken en associaties te ontdekken)
-.controller("listController", function($scope, $rootScope, $stateParams, $location, $sce, $filter, $ionicNavBarDelegate, $ionicLoading, APIDataFactory, APIDataParser, APIErrorHandler){
+.controller("listController", function($scope, $rootScope, $stateParams, $location, $sce, $filter, $ionicNavBarDelegate, $ionicLoading, $ionicModal, APIDataFactory, APIDataParser, APIErrorHandler){
 
 
   // Valid categorien
@@ -319,9 +319,10 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
 
         $scope.items = APIDataParser.parse($scope.category, result.results);
         $scope.total = result.total;
+        $scope.doneLoading = true;
 
         if(result.results.length == result.total) {
-          console.log('G#ELIJK');
+          // We hebben alle resultaten geladen, dus laten we ze dan maar sorteren, voor het gemak van de gebruiker
           var orderBy = $filter('orderBy');
           $scope.items = orderBy($scope.items, 'importance', true);
         }
@@ -338,6 +339,32 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
       }
     });
   };
+
+ 
+  $ionicModal.fromTemplateUrl('my-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+  $scope.showOptions = function() {
+    $scope.modal.show();
+  };
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+  //Cleanup the modal when we're done with it!
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+  });
+  // Execute action on hide modal
+  $scope.$on('modal.hidden', function() {
+    // Execute action
+  });
+  // Execute action on remove modal
+  $scope.$on('modal.removed', function() {
+    // Execute action
+  });
 
   $scope.details = function(item) {
     $scope.navigate('details/'+$scope.category+'/'+item.id);

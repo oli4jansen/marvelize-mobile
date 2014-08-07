@@ -2,19 +2,24 @@
 
 * {	font-family: 'Roboto', sans-serif !important; color: #333; }
 
-input::-moz-placeholder, textarea::-moz-placeholder { color: rgba(255,255,255,0.75); }
-input:-ms-input-placeholder, textarea:-ms-input-placeholder { color: rgba(255,255,255,0.75); }
-input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { color: rgba(255,255,255,0.75); }
+input::-moz-placeholder, textarea::-moz-placeholder { color: rgba(0,0,0,0.35); }
+input:-ms-input-placeholder, textarea:-ms-input-placeholder { color: rgba(0,0,0,0.35); }
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { color: rgba(0,0,0,0.35); }
 
 h1, h2 { font-weight: 300; }
 h3, h4 { font-weight: 400; color: #444; }
-h5, h6 { font-weight: 600; }
+h4, h5 { text-transform: uppercase; }
+h6 { font-size: 15px; font-weight: 400; color: #999; }
 
 p { font-size: 15px; font-weight: 400; line-height: 24px; margin: 0; }
 p.large { font-size: 17px; font-weight: 300; line-height: 26px; }
 
 .padding { padding: 20px; }
+.noPaddingBottom { padding-bottom: 0; }
 .list { padding-top: 12px; }
+.rotate90 { -webkit-transform: rotate(90deg); transform: rotate(90deg); }
+
+.bar .ion-more:before { font-size: 28px !important }
 
 .menu-content { box-shadow: 0px 0 15px rgba(0,0,0,0.2); }
 
@@ -83,13 +88,13 @@ p.large { font-size: 17px; font-weight: 300; line-height: 26px; }
 .has-header { top: 56px; }
 
 ion-side-menu .list { padding: 0 0 15px; }
-ion-side-menu .list .item { padding: 10px 10px 10px 25px; margin: 0; height: 57px; font-size: 18px; font-weight: 400; }
+ion-side-menu .list .item { padding: 10px 10px 10px 20px; margin: 0; height: 57px; font-size: 18px; font-weight: 400; }
 ion-side-menu .list .item-divider { font-weight: 400; padding-top: 10px; padding-bottom: 5px; height: 47px }
 ion-side-menu .list .item-divided { padding: 10px 10px 10px 35px; margin: 0; height: 52px; font-weight: 300; }
-ion-side-menu .list .item-input { background-color: rgba(255,255,255,0.15); margin: 10px; margin-bottom: 15px; }
-ion-side-menu .list .item-input input { font-size: 18px; line-height: 20px; color: white; }
+ion-side-menu .list .item-input { border-radius: 2px; background-color: rgba(255,255,255,0.85); margin: 10px; margin-bottom: 15px; box-shadow: 0 2px 2px rgba(0,0,0,0.26); height: 52px; }
+ion-side-menu .list .item-input input { font-size: 18px; line-height: 20px; color: rgba(0,0,0,0.55); }
 ion-side-menu .list .item-input input[disabled] { background-color: transparent; }
-ion-side-menu .list .item-input .icon { font-size: 18px; min-width: 18px; color: rgba(255,255,255,0.75); }
+ion-side-menu .list .item-input .icon { font-size: 20px; min-width: 24px; color: rgba(0,0,0,0.55); }
 
 .nav-title-slide-ios7 {
 	-webkit-transition: all 0 !important;
@@ -106,9 +111,10 @@ ion-side-menu .list .item-input .icon { font-size: 18px; min-width: 18px; color:
 	z-index: 999999;
 	border-radius: 100px;
 	opacity: .85;
-	top: 15px;
+	top: 10px;
+	left: 22px;
 }
-.item-thumbnail-left { padding-left: 110px; padding-top: 28px; }
+.item-thumbnail-left { padding-left: 122px; padding-top: 23px; padding-right: 12px; }
 .item-thumbnail-left:before {
 	content: '';
 	display: block;
@@ -117,8 +123,8 @@ ion-side-menu .list .item-input .icon { font-size: 18px; min-width: 18px; color:
 	border-radius: 100px;
 	background-color: #000000;
 	position: absolute;
-	top: 15px;
-	left: 10px;
+	top: 10px;
+	left: 22px;
 	z-index: 0;
 }
 
@@ -266,9 +272,38 @@ ion-side-menu .list .item-input .icon { font-size: 18px; min-width: 18px; color:
 			padding-right: 0;
 		}
 
+/*
+ion-radio
+*/
+
+.item-radio .item-content { padding: 10px 20px 10px 40px; }
+.item-radio .item-content span { color: #666; }
+
+.item-radio .radio-icon { visibility: visible !important; }
+.item-radio input ~ .radio-icon:before {
+	display: block;
+	content: '';
+	width: 11px;
+	height: 11px;
+	background: white;
+	border-radius: 100px;
+	border: 2px solid white;
+	box-shadow: 0 0 0 3px rgba(0,0,0,0.5);
+	margin: 3px 0;
+}
+.item-radio .item-content { background: transparent !important; }
+
+.item-radio .radio-icon { left: 0; }
+
+.item-radio input:checked ~ .radio-icon:before {
+	background: rgba(0,0,0,0.5);
+}
+
+
 .spinner { display: block; text-align: center; margin: 15px auto; font-size: 34px; }
 
 .right { float: right; }
 
+hr { height: 0; width: 100%; display: block; border: 0; border-top: 1px solid #eee; margin: 20px 0; }
 .transparent-header { top: 0; }
 .has-tabs-top, .hasTabsTop { top: 101px !important; }

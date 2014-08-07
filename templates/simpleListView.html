@@ -2,19 +2,55 @@
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+  	<button class="button button-icon icon ion-more rotate90" ng-click="showOptions()"></button>
+  </ion-nav-buttons>
 
   <ion-content class="has-header" ng-init="init()" ng-class="{ hasTabsTop: showCategoryTabs }">
 
+  	<div ng-if="items.length < 1 && doneLoading" class="padding center">
+  		<h4>No results</h4>
+  		<p class="large">We didn't get any results from Marvel.</p>
+  	</div>
+
+  	<div class="padding noPaddingBottom">
+		<h6 ng-if="doneLoading">Showing {{items.length}} of {{total}} results</h6>
+  	</div>
+
+
 	<ion-list>
-		<div ng-click="details(item)" class="item custom-list-item item-thumbnail-left" collection-repeat="item in items" collection-item-width="'100%'" collection-item-height="110" ng-style="{height: getItemHeight(item, $index)}">
+		<div ng-click="details(item)" class="item custom-list-item item-thumbnail-left" collection-repeat="item in items" collection-item-width="'100%'" collection-item-height="100" style="height: 100px">
 			<img ng-src="{{item.image}}">
 			<h2>{{item.title}}</h2>
 			<p>{{item.description}}</p>
 		</div>
 	</ion-list>
-
+	
 	<ion-infinite-scroll icon="none" on-infinite="getMoreItemsPlease()" distance="20%"></ion-infinite-scroll>
 
   </ion-content>
 </ion-view>
 
+<script id="my-modal.html" type="text/ng-template">
+	<ion-modal-view>
+		<ion-header-bar>
+			<h1 class="title">List settings</h1>
+			<div class="button button-clear" ng-click="modal.hide()"><span class="icon ion-close"></span></div>
+		</ion-header-bar>
+		<ion-content>
+			<div class="padding">
+				<form>
+					<h6>Order by</h6>
+					<ion-radio ng-model="order" ng-value="'name'">Name</ion-radio>
+					<ion-radio ng-model="order" ng-value="'modified'">Date modified</ion-radio>
+					<hr>
+
+					<h6>List style</h6>
+					<ion-radio ng-model="listStyle" ng-value="'name'">Compact</ion-radio>
+					<ion-radio ng-model="listStyle" ng-value="'modified'">Thumbnail</ion-radio>
+					<ion-radio ng-model="listStyle" ng-value="'modified'">Grid</ion-radio>
+				</form>
+			</div>
+		</ion-content>
+	</ion-modal-view>
+</script>

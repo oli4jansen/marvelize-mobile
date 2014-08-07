@@ -23,8 +23,8 @@
 }
 
 .custom-list-item {
-  left: 12px;
-  right: 12px;
+  left: 0;
+  right: 0;
 }
 
 .header-image .background { background-color: #dd191d; }
@@ -39,4 +39,5 @@
 	padding: 20px 25px;
 }
 
+.borderBottom { border-bottom: 1px solid #eee }
 .favorite { color: #FFC200 !important; }
