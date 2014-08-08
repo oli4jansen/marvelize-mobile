@@ -187,10 +187,11 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
           if($scope.itemData[$scope.lists[i].name].available > 0) $scope.itemData.associationsAvailable = true;
         }
 
-        for(var i = 0;i<$scope.itemData.prices.length;i++) {
-          if($scope.itemData[$scope.lists[i].name].available > 0) $scope.itemData.associationsAvailable = true;
+        if($scope.itemData.prices) {
+          for(var i = 0;i<$scope.itemData.prices.length;i++) {
+            if($scope.itemData[$scope.lists[i].name].available > 0) $scope.itemData.associationsAvailable = true;
+          }
         }
-
 
       }else{
         APIErrorHandler.error(error);
