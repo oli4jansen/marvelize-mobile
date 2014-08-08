@@ -21,7 +21,7 @@
 			<p class="large" ng-bind-html="itemData.descriptionHTML"></p>
 		</div>
 
-		<div class="padding" ng-if="category == 'comics'">
+		<div class="padding" ng-if="category == 'comics' && itemData">
 			<p class="large">This comic is part of the '{{itemData.series.name}}' series.</p>
 		</div>
 

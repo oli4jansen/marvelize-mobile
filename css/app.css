@@ -23,6 +23,12 @@
   left: 0;
   right: 0;
 }
+.custom-list-item.first {
+	height: 112px !important;
+	padding-top: 35px;
+}
+.custom-list-item.first.item-thumbnail-left > img:first-child,
+.custom-list-item.first.item-thumbnail-left:before { top: 22px; }
 
 .header-image .background { background-color: #dd191d; }
 

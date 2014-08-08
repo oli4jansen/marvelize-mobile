@@ -3,7 +3,7 @@
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-nav-buttons side="right">
-  	<button class="button button-icon icon ion-more rotate90" ng-click="showOptions()"></button>
+  	<button class="button button-icon icon ion-more rotate90" ng-click="showListPreferences()"></button>
   </ion-nav-buttons>
 
   <ion-content class="has-header" ng-init="init()" ng-class="{ hasTabsTop: showCategoryTabs }">
@@ -13,13 +13,8 @@
   		<p class="large">We didn't get any results from Marvel.</p>
   	</div>
 
-  	<div class="padding noPaddingBottom">
-		<h6 ng-if="doneLoading">Showing {{items.length}} of {{total}} results</h6>
-  	</div>
-
-
 	<ion-list>
-		<div ng-click="details(item)" class="item custom-list-item item-thumbnail-left" collection-repeat="item in items" collection-item-width="'100%'" collection-item-height="100" style="height: 100px">
+		<div ng-click="details(item)" class="item custom-list-item item-thumbnail-left" collection-repeat="item in items" collection-item-width="'100%'" collection-item-height="getItemHeight(item, $index)" style="height: 100px" ng-class="{ first: $index === 0 }">
 			<img ng-src="{{item.image}}">
 			<h2>{{item.title}}</h2>
 			<p>{{item.description}}</p>
@@ -31,24 +26,24 @@
   </ion-content>
 </ion-view>
 
-<script id="my-modal.html" type="text/ng-template">
+<script id="listPreferences.html" type="text/ng-template">
 	<ion-modal-view class="dark-theme">
 		<ion-header-bar>
 			<h1 class="title">List settings</h1>
-			<div class="button button-clear" ng-click="modal.hide()"><span class="icon ion-android-close"></span></div>
+			<div class="button button-blue" ng-click="applyListPreferences()">Apply</div>
 		</ion-header-bar>
 		<ion-content>
 			<div class="padding">
 				<form>
 					<h6>Order by</h6>
-					<ion-radio name="order" ng-model="order" ng-value="'name'">Name</ion-radio>
-					<ion-radio name="order" ng-model="order" ng-value="'modified'">Date modified</ion-radio>
+					<ion-radio name="order" ng-model="listPreferences.order" ng-value="'name'">Name</ion-radio>
+					<ion-radio name="order" ng-model="listPreferences.order" ng-value="'modified'">Date modified</ion-radio>
 					<hr>
 
 					<h6>List style</h6>
-					<ion-radio name="listStyle" ng-model="listStyle" ng-value="'compact'">Compact</ion-radio>
-					<ion-radio name="listStyle" ng-model="listStyle" ng-value="'thumbnail'">Thumbnail</ion-radio>
-					<ion-radio name="listStyle" ng-model="listStyle" ng-value="'grid'">Grid</ion-radio>
+					<ion-radio name="listStyle" ng-model="listPreferences.listStyle" ng-value="'compact'">Compact</ion-radio>
+					<ion-radio name="listStyle" ng-model="listPreferences.listStyle" ng-value="'thumbnail'">Thumbnail</ion-radio>
+					<ion-radio name="listStyle" ng-model="listPreferences.listStyle" ng-value="'grid'">Grid</ion-radio>
 				</form>
 			</div>
 		</ion-content>

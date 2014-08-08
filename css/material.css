@@ -16,7 +16,6 @@ p.large { font-size: 17px; font-weight: 300; line-height: 26px; }
 
 .padding { padding: 20px; }
 .noPaddingBottom { padding-bottom: 0; }
-.list { padding-top: 12px; }
 .rotate90 { -webkit-transform: rotate(90deg); transform: rotate(90deg); }
 
 .bar .ion-more:before { font-size: 28px !important }
@@ -297,6 +296,8 @@ ion-radio
 .item-radio .radio-icon { left: 0; }
 .item-radio input:checked ~ .radio-icon:before { background: rgba(0,0,0,0.5); }
 
+ion-modal-view { opacity: .95; }
+
 /*
 dark theme
 */
@@ -322,6 +323,13 @@ dark theme
 .dark-theme .item-radio input:checked ~ .radio-icon:before { background: white; box-shadow: 0 0 0 3px white; }
 .dark-theme .item-radio input:checked ~ .item-content span { color: white; }
 .dark-theme hr { border-color: #666; }
+
+.dark-theme .bar .button.button-blue {
+	color: white;
+	font-size: 16px;
+	background-color: #5677fc !important;
+	padding: 2px 15px;
+}
 
 ion-modal-view .bar .button .icon:before { font-size: 16px !important; color: white; margin: 5px 15px 0 0; }
 

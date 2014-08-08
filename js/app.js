@@ -242,46 +242,49 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
   // Lege array met items die we gaan laten zien
   $scope.items = [];
 
-  $scope.URLParamsObject = {};
+  // To do: getListPreferencesFromStorage
+  $scope.listPreferences = {
+    listStyle: 'thumbnail',
+    order: 'name'
+  };
+  var oldListPreferences = $scope.listPreferences;
+
+  // Object met alle URL parameters die in de request URL voor Marvel moeten komen
+  var URLParamsObject = {};
   $scope.filterResultsEmpty = false;
 
   $scope.init = function() {
-
-    // De titel die we uiteindelijk gaan gebruiken
+    // De titel die we uiteindelijk gaan gebruiken in de actionBar
     var title = $stateParams.category;
 
-    // Only accept categories from the allCategories array
+    // Checken of de aangevraagde categorie geldig is
     if($scope.allCategories.indexOf($stateParams.category) == -1) $scope.navigate('');
 
     // Als er een associatie gezocht wordt, vragen we die op:
     if($stateParams.association && ($stateParams.association == 'with' || $stateParams.association == 'in')) {
 
+      // Meervoud maken van de categorie...
       var associationWith = $stateParams.associationWith
+      // ...behalve bij series want dat heeft geen meervoud
       if($stateParams.associationWith !== 'series') associationWith = associationWith+'s';
 
-      // New URL parameter for APIDataFactory: add ID of associated item to list of IDs of this specific category
-      $scope.URLParamsObject[associationWith] = $stateParams.ID;
+      // ID van hetgeen waar een associatie mee gezocht wordt als URL param instellen
+      URLParamsObject[associationWith] = $stateParams.ID;
 
-      // Filter title is something like 'Comics with 'Iron Man'.'
+      // De titel is anders bij associaties dan bij normale lijsten
       title = $scope.category + ' ' + $stateParams.association + ' \'' + $stateParams.name + '\'.';
 
-      // Set up a back button to the associationWith item
-      $scope.backButton = {
-        type: associationWith,
-        id: $stateParams.ID
-      };
-
     }else if($stateParams.association) {
-      // If the association type is not 'with' or 'in'; just show the overview
+      // Ongeldige associatie, ga terug naar categorie
       $scope.navigate('browse/'+$scope.category);
-
-    // Zoekopdracht:
     }else if($stateParams.query) {
+      // Er is een zoekopdracht gedaan
 
       // De tabs met de categorien laten zien
       $rootScope.showCategoryTabs = true;
       $rootScope.searchQuery = $stateParams.query;
 
+      // de juiste parameter voor de categorie zoeken
       switch($scope.category) {
         case 'characters':
           var fieldToQuery = 'nameStartsWith';
@@ -300,76 +303,88 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
           break;
       }
 
-      $scope.URLParamsObject[fieldToQuery] = $stateParams.query;
+      // URL parameter instellen
+      URLParamsObject[fieldToQuery] = $stateParams.query;
+      // Titel aanpassen aan zoekopdracht
       title = 'Searching for \'' + $stateParams.query + '\'';
     }
 
-    $scope.URLParamsObject.orderBy = 'modified';
+    // De sorteervolgorde als parameter instellen
+    URLParamsObject.orderBy = $scope.listPreferences.order || 'modified';
 
-    // Display loading shizzle
-    $ionicNavBarDelegate.setTitle('Marvel is slow, I know');
+    // Display loading dingen
     $ionicLoading.show({
       template: '<i class="ion-loading-d spinner"></i>Loading...'
     });
 
-    APIDataFactory.getList($scope.category, $scope.URLParamsObject, function(error, result) {
-      $ionicLoading.hide();
+    // Titel alvast instellen
+    $ionicNavBarDelegate.setTitle(title);
+
+    // De data ophalen bij Marvel
+    APIDataFactory.getList($scope.category, URLParamsObject, function(error, result) {
       if(!error) {
-        $ionicNavBarDelegate.setTitle(title);
 
+        // Items parsen en in de scope laden
         $scope.items = APIDataParser.parse($scope.category, result.results);
+        // Totale aantal items in scope zetten
         $scope.total = result.total;
-        $scope.doneLoading = true;
 
+        // Als het aantal gelaadde items gelijk is aan het totale aantal items:
         if(result.results.length == result.total) {
-          // We hebben alle resultaten geladen, dus laten we ze dan maar sorteren, voor het gemak van de gebruiker
+          // Sorteren op importance is mogelijk
           var orderBy = $filter('orderBy');
           $scope.items = orderBy($scope.items, 'importance', true);
         }
 
-        console.log($scope.items);
-
-        if(result.total === 0) {
-          $scope.filterResultsEmpty = true;
-          $scope.nothingFoundHint = $sce.trustAsHtml('Marvel restictions: your query has to be the <u>beginning of a character or series</u>.<br>I.e: \'Iro\' will find \'Iron Man\' but \'ron Man\' won\'t.');
-        }
+        // Loading dingen weghalen
+        $ionicLoading.hide();
+        $scope.doneLoading = true;
       }else{
+        // Loading dingen weghalen
+        $ionicLoading.hide();
+        $scope.doneLoading = true;
+
+        // To do: errors goed verwerken
         alert('Error: '+JSON.stringify(error));
         $ionicNavBarDelegate.setTitle('Error');
       }
     });
   };
 
- 
-  $ionicModal.fromTemplateUrl('my-modal.html', {
+  // Modal voor list preferences aanmaken
+  $ionicModal.fromTemplateUrl('listPreferences.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
     $scope.modal = modal;
   });
-  $scope.showOptions = function() {
+
+  // Modal met listPreferences openen
+  $scope.showListPreferences = function() {
+    // Opties weergeven in modal
     $scope.modal.show();
   };
-  $scope.closeModal = function() {
-    $scope.modal.hide();
-  };
-  //Cleanup the modal when we're done with it!
-  $scope.$on('$destroy', function() {
-    $scope.modal.remove();
-  });
-  // Execute action on hide modal
-  $scope.$on('modal.hidden', function() {
-    // Execute action
-  });
-  // Execute action on remove modal
-  $scope.$on('modal.removed', function() {
-    // Execute action
-  });
 
+  // Modal met listPreferences sluiten en doorvoeren
+  $scope.applyListPreferences = function() {
+    // Lijst opnieuw laden
+    $scope.init();
+    // Verberg opties
+    $scope.modal.hide()
+  };
+
+  // Het eerste item in de collection repeat list is groter, anders wordt de layout opgefokt
+  $scope.getItemHeight = function(item, index) {
+    if(index === 0) return 112;
+    return 100;
+  };
+
+  // Link naar de detail pagina
   $scope.details = function(item) {
     $scope.navigate('details/'+$scope.category+'/'+item.id);
   };
 
+  // Functie die aangeroepen wordt als het einde van de lijst nabij is
   $scope.getMoreItemsPlease = function() {
     if($scope.items.length && $scope.total > $scope.items.length) {
 
@@ -391,6 +406,8 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
 
   $scope.$on('$destroy', function() {
     $rootScope.showCategoryTabs = false;
+    // Er zeker van zijn dat de modal uit de DOM is
+    $scope.modal.remove();
   });
 
 });
