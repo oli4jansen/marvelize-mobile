@@ -18,6 +18,8 @@ p.large { font-size: 17px; font-weight: 300; line-height: 26px; }
 .noPaddingBottom { padding-bottom: 0; }
 .rotate90 { -webkit-transform: rotate(90deg); transform: rotate(90deg); }
 .opacity50 { opacity: .5; }
+.opacity75 { opacity: .75; }
+.center { margin: 0 auto; }
 
 .list { margin-bottom: 0; }
 
@@ -89,13 +91,16 @@ p.large { font-size: 17px; font-weight: 300; line-height: 26px; }
 .has-header { top: 56px; }
 
 ion-side-menu .list { padding: 0 0 15px; }
-ion-side-menu .list .item { padding: 10px 10px 10px 20px; margin: 0; height: 57px; font-size: 18px; font-weight: 400; }
-ion-side-menu .list .item-divider { font-weight: 400; padding-top: 10px; padding-bottom: 5px; height: 47px }
-ion-side-menu .list .item-divided { padding: 10px 10px 10px 35px; margin: 0; height: 52px; font-weight: 300; }
-ion-side-menu .list .item-input { border-radius: 2px; background-color: white; margin: 10px; margin-bottom: 15px; box-shadow: 0 2px 2px rgba(0,0,0,0.26); height: 52px; }
+ion-side-menu .list .item { padding: 10px 10px 10px 30px; margin: 0; height: 57px; font-size: 18px; font-weight: 400; }
+ion-side-menu .list h5 { padding: 10px 10px 5px 30px; color: rgba(255,255,255,0.65); }
+ion-side-menu .list h5 i { color: rgba(255,255,255,0.75); font-size: 25px; vertical-align: middle; padding-right: 10px; }
+ion-side-menu .list .item-input { border-radius: 2px; background-color: white; margin: 10px; padding-left: 20px; margin-bottom: 15px; box-shadow: 0 2px 2px rgba(0,0,0,0.26); height: 52px; }
 ion-side-menu .list .item-input input { font-size: 18px; line-height: 20px; color: rgba(0,0,0,0.55); }
 ion-side-menu .list .item-input input[disabled] { background-color: transparent; }
 ion-side-menu .list .item-input .icon { font-size: 20px; min-width: 24px; color: rgba(0,0,0,0.55); }
+
+.left-buttons .ion-navicon-round:before { font-size: 28px !important; }
+.left-buttons .ion-arrow-left-c:before { font-size: 30px !important; }
 
 .nav-title-slide-ios7 {
 	-webkit-transition: all 0 !important;
@@ -201,10 +206,10 @@ small list
 .small .item-thumbnail-left.first { height: 67px !important; padding-top: 20px !important; }
 .small .item-thumbnail-left.first > .img:first-child { top: 10px; }
 
-ion-side-menu .small .item-thumbnail-left { padding: 10px 10px 10px 90px !important; }
-ion-side-menu .small .item-thumbnail-left h2 { color: white; }
+ion-side-menu .small .item-thumbnail-left { padding: 10px 10px 10px 85px !important; }
+ion-side-menu .small .item-thumbnail-left h2 { color: white; font-weight: 400; margin-right: 10px; }
 ion-side-menu .small .item-thumbnail-left p { color: rgba(255,255,255,0.7); }
-ion-side-menu .small .item-thumbnail-left > .img:first-child { width: 40px; height: 40px; left: 35px; top: 10px; border-radius: 100px; }
+ion-side-menu .small .item-thumbnail-left > .img:first-child { width: 40px; height: 40px; left: 30px; top: 10px; border-radius: 100px; }
 
 /*
 grid(list)
@@ -292,6 +297,9 @@ grid(list)
 	-webkit-transition: background 0;
 	transition: background 0;
 }
+.bar.coverBarActive .ion-arrow-left-c { display: none; }
+.bar.coverBarActive.transparent .ion-arrow-left-c { display: inline-block; }
+.bar.coverBarActive .title { right: 52px; }
 .coverBar {
 	display: block;
 	position: fixed;
@@ -333,15 +341,6 @@ grid(list)
 }
 .header-image h1 * { color: white; }
 
-.card .item { padding: 15px 20px 20px; }
-.card .item-divider {
-	padding: 12px 20px;
-	background-color: #f5f5f5;
-	color: rgba(0, 0, 0, 0.35);
-	font-weight: 400;
-	font-size: 18px;
-}
-
 .button-hollow {
 	border-color: transparent;
 	background-color: transparent;
@@ -371,12 +370,18 @@ grid(list)
 	border-radius: 3px;
 	background-color: rgba(255,255,255, 0.95);
 	text-align: center;
-	font-size: 14px;
-	text-transform: uppercase;
+	font-size: 16px;
 	font-weight: 400;
 	box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24);
 }
-.loading-container .loading span { color: #333; }
+.loading-container .loading span { display: block; padding: 20px 0 0; color: #333; }
+
+.loading-container small {
+	text-transform: none;
+	opacity: .5;
+	padding: 10px 0 0;
+	display: block;
+}
 
 .popup {
 	border-radius: 2px;

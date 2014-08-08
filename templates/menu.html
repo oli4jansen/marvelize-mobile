@@ -26,13 +26,13 @@
           </label>
         </form>
 
-        <div class="item item-divider">Browse</div>
-        <a menu-close class="item item-divided" href="#/app/browse/characters">Characters</a>
-        <a menu-close class="item item-divided" href="#/app/browse/comics">Comics</a>
-        <a menu-close class="item item-divided" href="#/app/browse/series">Series</a>
-        <a menu-close class="item item-divided" href="#/app/browse/events">Events</a>
+        <h5>Browse</h5>
+        <a menu-close class="item" href="#/app/browse/characters">Characters</a>
+        <a menu-close class="item" href="#/app/browse/comics">Comics</a>
+        <a menu-close class="item" href="#/app/browse/series">Series</a>
+        <a menu-close class="item" href="#/app/browse/events">Events</a>
 
-        <div class="item item-divider">Favorites</div>
+        <h5>Favorites</h5>
 
         <ion-list class="small">
           <div ng-repeat="favorite in favorites track by $index" ng-click="navigate('details/'+favorite.type+'/'+favorite.id)" class="item custom-list-item item-thumbnail-left">

@@ -68,7 +68,7 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
 })
 
 // De basis controller van de app
-.controller('AppCtrl', function($scope, $rootScope, $timeout, $location, $ionicSideMenuDelegate, favorites) {
+.controller('AppCtrl', function($scope, $rootScope, $timeout, $location, $ionicSideMenuDelegate, $ionicNavBarDelegate, $ionicLoading, favorites) {
   $scope.searchDisabled = false;
 
   // Favorites ophalen
@@ -85,12 +85,26 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
     $location.path('/app/search/characters/'+query);
     $timeout(function() {
       $scope.searchDisabled = false;
-    }, 200);
+    }, 500);
   };
 
   $scope.changeCategory = function(category) {
     var query = $rootScope.searchQuery;
     $location.path('/app/search/'+category+'/'+query);
+  };
+
+  $scope.goBack = function() {
+    $ionicNavBarDelegate.back();
+  };
+
+  $rootScope.startLoading = function() {
+    var animatedGIF = Math.floor(Math.random()*4);
+    $ionicLoading.show({
+      template: '<img src="img/loaders/'+animatedGIF+'.gif" class="opacity75 center">Loading...<small>Marvel can be very slow at times.</small>'
+    });
+  };
+  $rootScope.stopLoading = function() {
+    $ionicLoading.hide();
   };
 })
 
@@ -402,12 +416,8 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
     // De sorteervolgorde als parameter instellen
     URLParamsObject.orderBy = desc+$scope.listPreferences.order || 'modified';
 
-    /*
-      Loading dingen
-    */
-    $ionicLoading.show({
-      template: '<i class="ion-loading-d spinner"></i>Loading...'
-    });
+    // Loading dingen
+    $rootScope.startLoading();
 
     // orderOption = als init() geladen is vanuit een listPreferences wijziging
     // order mag geen importance zijn (is geen geldige sorteer optie bij Marvel), dit kan pas nadat we weten hoeveel items er zijn
@@ -458,11 +468,11 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
         }
 
         // Loading dingen weghalen
-        $ionicLoading.hide();
+        $rootScope.stopLoading();
         $scope.doneLoading = true;
       }else{
         // Loading dingen weghalen
-        $ionicLoading.hide();
+        $rootScope.stopLoading();
         $scope.doneLoading = true;
 
         // To do: errors goed verwerken

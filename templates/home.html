@@ -1,11 +1,14 @@
 <ion-view title="Marvelize">
   <ion-nav-buttons side="left">
-    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+    <button menu-toggle="left" class="button button-icon icon ion-navicon-round"></button>
   </ion-nav-buttons>
   <ion-content class="has-header padding">
     <div class="center padding">
-    	<h1>Welcome</h1>
-    	<p class="large">Swipe to the right or use the hamburger button to open the menu.</p>
+    	<i class="ion-compass" style="display: block; text-align: center; padding: 25px 0 15px; font-size: 180px;"></i>
+    	<h1>Welcome to Marvelize</h1>
+    	<p class="large">an unofficial Marvel browser</p>
     </div>
+
+    <a ng-click="startLoading()" class="button">Start loading</a>
   </ion-content>
 </ion-view>
