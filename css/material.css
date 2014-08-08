@@ -277,7 +277,8 @@ ion-side-menu .list .item-input .icon { font-size: 20px; min-width: 24px; color:
 ion-radio + ion-checkbox
 */
 
-.item-checkbox { padding: 0; }
+.item-checkbox { padding: 0; -webkit-transition: .25s; -moz-transition: .25s; transition: .25s; }
+.item-checkbox.disabled { height: 0px; }
 
 .item-radio .item-content { padding: 10px 20px 10px 40px; }
 .item-checkbox .item-content { padding: 10px 20px 10px 60px }

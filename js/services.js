@@ -174,7 +174,7 @@ angular.module('marvelize.services', [])
                 title: item.title,
                 image: item.thumbnail.path+'/landscape_amazing.'+item.thumbnail.extension,
                 description: description,
-                importance: item.id
+                importance: item.comics.available
               };
             parsedData.push(parsedItem);
           });
@@ -283,7 +283,7 @@ angular.module('marvelize.services', [])
       }
     };
 
-  // Favorites ophalen uit storage
+  // preferences ophalen uit storage
   try {
     listPreferences = JSON.parse(window.localStorage['listPreferences']);
   } catch(e) {  }
@@ -291,7 +291,14 @@ angular.module('marvelize.services', [])
   var obj = {
     // listPreferences ophalen
     get: function() {
+      this.refresh();
       return listPreferences;
+    },
+    refresh: function() {
+      try {
+        listPreferences = JSON.parse(window.localStorage['listPreferences']);
+      } catch(e) {  }
+      return;
     },
     // listPreferences opslaan in localStorage
     save: function() {
@@ -300,6 +307,7 @@ angular.module('marvelize.services', [])
     },
     set: function(category, obj) {
       listPreferences[category] = obj;
+      this.save();
     }
   }
 

@@ -38,7 +38,7 @@
 					<h6>Order by</h6>
 					<ion-radio name="order" ng-repeat="orderOptions in possibleOrderOptions" ng-model="listPreferences.order" ng-value="orderOptions.value">{{orderOptions.name}}</ion-radio>
 
-					<ion-checkbox ng-model="listPreferences.descending" ng-class="{ white: listPreferences.descending }">Descending</ion-checkbox>
+					<ion-checkbox ng-model="listPreferences.descending" ng-class="{ white: listPreferences.descending, disabled: listPreferences.order == 'importance' }">Descending</ion-checkbox>
 
 					<hr>
 

@@ -242,11 +242,6 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
   // Lege array met items die we gaan laten zien
   $scope.items = [];
 
-  // List preferences ophalen uit storage
-  var lP = listPreferences.get();
-  // Juiste categorie selecteren
-  $scope.listPreferences = lP[$scope.category];
-
   // Object met alle URL parameters die in de request URL voor Marvel moeten komen
   var URLParamsObject = {};
   $scope.filterResultsEmpty = false;
@@ -302,7 +297,15 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
       break;
   }
 
-  $scope.init = function() {
+  var oldOrder = 'poep';
+
+  // List preferences ophalen uit storage
+  var lP = listPreferences.get();
+  // Juiste categorie selecteren
+  $scope.listPreferences = lP[$scope.category];
+
+  $scope.init = function(orderOption) {
+
     // De titel die we uiteindelijk gaan gebruiken in de actionBar
     var title = $stateParams.category;
 
@@ -372,6 +375,13 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
     // Titel alvast instellen
     $ionicNavBarDelegate.setTitle(title);
 
+    if(!orderOption && $scope.listPreferences && $scope.listPreferences.order == 'importance') {
+      // List preferences ophalen uit storage
+      var lP = listPreferences.get();
+      // Juiste categorie selecteren
+      $scope.listPreferences = lP[$scope.category];
+    }
+
     // De data ophalen bij Marvel
     APIDataFactory.getList($scope.category, URLParamsObject, function(error, result) {
       if(!error) {
@@ -381,12 +391,27 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
         // Totale aantal items in scope zetten
         $scope.total = result.total;
 
+        $ionicNavBarDelegate.setTitle(title);
+
         // Als het aantal gelaadde items gelijk is aan het totale aantal items:
-/*        if(result.results.length == result.total) {
-          // Sorteren op importance is mogelijk
-          var orderBy = $filter('orderBy');
-          $scope.items = orderBy($scope.items, 'importance', true);
-        }*/
+        if(result.results.length == result.total) {
+          var isImportanceAlreadyAnOption = false;
+          for(var i = 0;i<$scope.possibleOrderOptions.length;i++) {
+            if($scope.possibleOrderOptions[i].value == 'importance') isImportanceAlreadyAnOption = true;
+          }
+
+          if(!isImportanceAlreadyAnOption) $scope.possibleOrderOptions.push({ value: 'importance', name: 'Importance' });
+
+          oldOrder = $scope.listPreferences.order;
+
+          if((orderOption && orderOption == 'importance') || orderOption == undefined || !orderOption) {
+            // Sorteren op importance
+            $scope.listPreferences.order = 'importance';
+            var orderBy = $filter('orderBy');
+            $scope.items = orderBy($scope.items, 'importance', true);
+          }
+        }
+
 
         // Loading dingen weghalen
         $ionicLoading.hide();
@@ -419,12 +444,12 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
 
   // Modal met listPreferences sluiten en doorvoeren
   $scope.applyListPreferences = function() {
+    var newOrder = $scope.listPreferences.order;
+    if($scope.listPreferences.order == 'importance') $scope.listPreferences.order = oldOrder;
     // List preferences updaten
     listPreferences.set($scope.category, $scope.listPreferences);
-    // En vervolgens opslaan in storage
-    listPreferences.save();
     // Lijst opnieuw laden
-    $scope.init();
+    $scope.init(newOrder);
     // Verberg opties
     $scope.modal.hide()
   };
