@@ -234,18 +234,22 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
 // Controller voor lijsten (wordt gebruikt om te browsen, zoeken en associaties te ontdekken)
 .controller("listController", function($scope, $rootScope, $stateParams, $location, $sce, $filter, $ionicNavBarDelegate, $ionicLoading, $ionicModal, listPreferences, APIDataFactory, APIDataParser, APIErrorHandler){
 
+  /*
+    Variabelen
+  */
 
   // Valid categorien
   $scope.allCategories = ['characters', 'series', 'comics', 'events'];
   // Huidige categorie
   $rootScope.category = $stateParams.category;
+  // Titel van de pagina
+  var title = $stateParams.category;
   // Lege array met items die we gaan laten zien
   $scope.items = [];
-
   // Object met alle URL parameters die in de request URL voor Marvel moeten komen
   var URLParamsObject = {};
-  $scope.filterResultsEmpty = false;
 
+  // Per lijst/categorie mogelijke sorteer opties
   switch($scope.category) {
     case 'characters':
       $scope.possibleOrderOptions = [{
@@ -304,15 +308,23 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
   // Juiste categorie selecteren
   $scope.listPreferences = lP[$scope.category];
 
+  // Modal voor list preferences aanmaken
+  $ionicModal.fromTemplateUrl('listPreferences.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+  
+  // Init functie wordt aangeroepen bij het laden van een lijst en wijzigen van de sorteeropties
   $scope.init = function(orderOption) {
 
-    // De titel die we uiteindelijk gaan gebruiken in de actionBar
-    var title = $stateParams.category;
-
-    // Checken of de aangevraagde categorie geldig is
+    // Geldige categorie?
     if($scope.allCategories.indexOf($stateParams.category) == -1) $scope.navigate('');
 
-    // Als er een associatie gezocht wordt, vragen we die op:
+    /*
+      Associatie aangevraagd?
+    */
     if($stateParams.association && ($stateParams.association == 'with' || $stateParams.association == 'in')) {
 
       // Meervoud maken van de categorie...
@@ -326,12 +338,17 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
       // De titel is anders bij associaties dan bij normale lijsten
       title = $scope.category + ' ' + $stateParams.association + ' \'' + $stateParams.name + '\'.';
 
+    /*
+      Ongeldige associatie?
+    */
     }else if($stateParams.association) {
       // Ongeldige associatie, ga terug naar categorie
       $scope.navigate('browse/'+$scope.category);
-    }else if($stateParams.query) {
-      // Er is een zoekopdracht gedaan
 
+    /*
+      Zoekopdracht?
+    */
+    }else if($stateParams.query) {
       // De tabs met de categorien laten zien
       $rootScope.showCategoryTabs = true;
       $rootScope.searchQuery = $stateParams.query;
@@ -361,49 +378,61 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
       title = 'Searching for \'' + $stateParams.query + '\'';
     }
 
+    /*
+      Sorteer opties
+    */
     var desc = '';
     if($scope.listPreferences.descending) desc = '-';
-
     // De sorteervolgorde als parameter instellen
     URLParamsObject.orderBy = desc+$scope.listPreferences.order || 'modified';
 
-    // Display loading dingen
+    /*
+      Loading dingen
+    */
     $ionicLoading.show({
       template: '<i class="ion-loading-d spinner"></i>Loading...'
     });
 
-    // Titel alvast instellen
-    $ionicNavBarDelegate.setTitle(title);
-
+    // orderOption = als init() geladen is vanuit een listPreferences wijziging
+    // order mag geen importance zijn (is geen geldige sorteer optie bij Marvel), dit kan pas nadat we weten hoeveel items er zijn
     if(!orderOption && $scope.listPreferences && $scope.listPreferences.order == 'importance') {
       // List preferences ophalen uit storage
       var lP = listPreferences.get();
-      // Juiste categorie selecteren
+      // Juiste categorie selecteren en listPreferences resetten
       $scope.listPreferences = lP[$scope.category];
     }
 
-    // De data ophalen bij Marvel
+    // Titel instellen
+    $ionicNavBarDelegate.setTitle(title);
+
+    // DATA OPHALEN BIJ MARVEL
     APIDataFactory.getList($scope.category, URLParamsObject, function(error, result) {
       if(!error) {
-
         // Items parsen en in de scope laden
         $scope.items = APIDataParser.parse($scope.category, result.results);
         // Totale aantal items in scope zetten
         $scope.total = result.total;
 
-        $ionicNavBarDelegate.setTitle(title);
-
         // Als het aantal gelaadde items gelijk is aan het totale aantal items:
         if(result.results.length == result.total) {
+          // We kunnen nu client-side sorteren
+          // 'importance' is tot nu toe de enige factor waarop we sorteren
+
+          // staat importance al tussen de keuzes in het listPreferences scherm?
           var isImportanceAlreadyAnOption = false;
           for(var i = 0;i<$scope.possibleOrderOptions.length;i++) {
             if($scope.possibleOrderOptions[i].value == 'importance') isImportanceAlreadyAnOption = true;
           }
 
+          // Zo nee: zet de keuze ertussen
           if(!isImportanceAlreadyAnOption) $scope.possibleOrderOptions.push({ value: 'importance', name: 'Importance' });
 
+          // De vorige keuze tijdelijk onthouden
+          // We willen 'importance' niet opslaan als keuze omdat deze optie niet altijd beschikbaar is 
+          // We gebruiken oldOrder om de vorige keuze te onthouden en die opgeslagen te houden
           oldOrder = $scope.listPreferences.order;
 
+          // Tenzij er een andere optie gekozen is, sorteren we nu op importance
           if((orderOption && orderOption == 'importance') || orderOption == undefined || !orderOption) {
             // Sorteren op importance
             $scope.listPreferences.order = 'importance';
@@ -411,7 +440,6 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
             $scope.items = orderBy($scope.items, 'importance', true);
           }
         }
-
 
         // Loading dingen weghalen
         $ionicLoading.hide();
@@ -428,27 +456,18 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
     });
   };
 
-  // Modal voor list preferences aanmaken
-  $ionicModal.fromTemplateUrl('listPreferences.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-
   // Modal met listPreferences openen
-  $scope.showListPreferences = function() {
-    // Opties weergeven in modal
-    $scope.modal.show();
-  };
+  $scope.showListPreferences = function() { $scope.modal.show(); };
 
   // Modal met listPreferences sluiten en doorvoeren
   $scope.applyListPreferences = function() {
+    // De sorteeroptie die we gaan kiezen heet newOrder
     var newOrder = $scope.listPreferences.order;
-    if($scope.listPreferences.order == 'importance') $scope.listPreferences.order = oldOrder;
+    // Als de keuze importance is, dan slaan we oldOrder op ipv importance
+    if(newOrder == 'importance') $scope.listPreferences.order = oldOrder;
     // List preferences updaten
     listPreferences.set($scope.category, $scope.listPreferences);
-    // Lijst opnieuw laden
+    // Lijst opnieuw laden met de keuze als parameter
     $scope.init(newOrder);
     // Verberg opties
     $scope.modal.hide()
@@ -456,14 +475,33 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
 
   // Het eerste item in de collection repeat list is groter, anders wordt de layout opgefokt
   $scope.getItemHeight = function(item, index) {
-    if(index === 0) return 112;
-    return 100;
+    switch($scope.listPreferences.listStyle) {
+      case 'small':
+        if(index === 0) return 67;
+        return 60;
+      case 'cozy':
+        if(index === 0) return 92;
+        return 80;
+      case 'grid':
+        return 132;
+      case 'normal':
+      default:
+        if(index === 0) return 112;
+        return 100;
+    }
+  };
+
+  $scope.getItemWidth = function(item, index) {
+    switch($scope.listPreferences.listStyle) {
+      case 'grid':
+        return '50%';
+      default:
+        return '100%';
+    }
   };
 
   // Link naar de detail pagina
-  $scope.details = function(item) {
-    $scope.navigate('details/'+$scope.category+'/'+item.id);
-  };
+  $scope.details = function(item) { $scope.navigate('details/'+$scope.category+'/'+item.id); };
 
   // Functie die aangeroepen wordt als het einde van de lijst nabij is
   $scope.getMoreItemsPlease = function() {

@@ -13,9 +13,9 @@
   		<p class="large">We didn't get any results from Marvel.</p>
   	</div>
 
-	<ion-list>
-		<div ng-click="details(item)" class="item custom-list-item item-thumbnail-left" collection-repeat="item in items" collection-item-width="'100%'" collection-item-height="getItemHeight(item, $index)" style="height: 100px" ng-class="{ first: $index === 0 }">
-			<img ng-src="{{item.image}}">
+	<ion-list class="{{listPreferences.listStyle}}" ng-class="{ cozy: listPreferences.listStyle == 'cozy' }">
+		<div ng-click="details(item)" class="item custom-list-item item-thumbnail-left" collection-repeat="item in items" collection-item-width="getItemWidth(item, $index)" collection-item-height="getItemHeight(item, $index)" ng-class="{ first: $index === 0 }">
+			<span class="img" style="background-image: url({{item.image}})"></span>
 			<h2>{{item.title}}</h2>
 			<p>{{item.description}}</p>
 		</div>
@@ -43,8 +43,9 @@
 					<hr>
 
 					<h6>List style</h6>
-					<ion-radio name="listStyle" ng-model="listPreferences.listStyle" ng-value="'compact'">Compact</ion-radio>
-					<ion-radio name="listStyle" ng-model="listPreferences.listStyle" ng-value="'thumbnail'">Thumbnail</ion-radio>
+					<!--<ion-radio name="listStyle" ng-model="listPreferences.listStyle" ng-value="'small'">Small list</ion-radio>-->
+					<ion-radio name="listStyle" ng-model="listPreferences.listStyle" ng-value="'cozy'">Cozy list</ion-radio>
+					<ion-radio name="listStyle" ng-model="listPreferences.listStyle" ng-value="'normal'">Normal list</ion-radio>
 					<ion-radio name="listStyle" ng-model="listPreferences.listStyle" ng-value="'grid'">Grid</ion-radio>
 				</form>
 			</div>

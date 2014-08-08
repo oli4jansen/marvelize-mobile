@@ -34,7 +34,7 @@
 
         <ion-list class="small">
           <div ng-repeat="favorite in favorites" ng-click="navigate('details/'+favorite.type+'/'+favorite.id)" class="item custom-list-item item-thumbnail-left">
-            <img ng-src="{{favorite.image}}">
+            <span class="img" style="background-image: url({{favorite.image}})"></span>
             <h2>{{favorite.title}}</h2>
             <p>in {{favorite.type}}</p>
           </div>
