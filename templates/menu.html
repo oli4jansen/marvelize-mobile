@@ -1,8 +1,10 @@
 <ion-side-menus>
 
   <ion-pane ion-side-menu-content>
-    <ion-nav-bar class="bar-stable no-animation" animation="no-animation" ng-class="{ transparent: transparentNavBar }">
+    <ion-nav-bar class="bar-stable no-animation" animation="no-animation" ng-class="{ transparent: transparentNavBar, coverBarActive: coverActive }">
     </ion-nav-bar>
+
+    <div ng-if="coverActive && coverImage && !transparentNavBar" ng-style="{'background-image':'url('+coverImage+')'}" class="coverBar"></div>
 
     <div class="tabs-top" ng-if="showCategoryTabs" drag-content="false">
       <a ng-click="changeCategory('characters')" ng-class="{ active: category == 'characters' }">Characters</a>

@@ -71,9 +71,6 @@ p.large { font-size: 17px; font-weight: 300; line-height: 26px; }
 	border: 0;
 	padding: 5px 10px;
 	box-shadow: 0 2px 5px rgba(0,0,0,.26);
-	-webkit-transition: background .25s;
-	-moz-transition: background .25s;
-	transition: background .25s;
 }
 .bar .title {
 	height: 56px;
@@ -286,6 +283,28 @@ grid(list)
 	border-bottom: 2px solid rgba(255,255,255,0.75);
 }
 
+.bar.coverBarActive {
+	background-color: rgba(221, 25, 29, 0.75) !important;
+	-webkit-transition: background 1s ease .5s;
+	transition: background 1s ease .5s;
+}
+.bar.coverBarActive.transparent {
+	-webkit-transition: background 0;
+	transition: background 0;
+}
+.coverBar {
+	display: block;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 56px;
+	z-index: 9;
+	background-position: center bottom;
+	background-size: cover;
+	filter: contrast(.65) saturate(1.5);
+	-webkit-filter: contrast(.65) saturate(1.5);
+}
 .bar.transparent {
 	border-color: transparent !important;
 	background: transparent !important;
@@ -300,7 +319,7 @@ grid(list)
 	top: 0;
 	bottom: 0;
 	width: 100%;
-	background-position: center;
+	background-position: center bottom;
 	background-size: cover;
 	z-index: -1;
 	filter: contrast(.65) saturate(1.5);

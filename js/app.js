@@ -118,6 +118,7 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
         }else{
           $scope.itemData.image = '';
         }
+        $rootScope.coverImage = $scope.itemData.image;
 
         // If item is favorite, enable 'favorite' variable
         if(favorites.isFavorite({ id: $scope.itemData.id, type: $scope.category })) $scope.favorite = true;
@@ -240,6 +241,8 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
 
   $scope.$on('$destroy', function() {
     $rootScope.transparentNavBar = false;
+    $rootScope.coverImage = false;
+    $rootScope.coverActive = false;
   });
 
 })

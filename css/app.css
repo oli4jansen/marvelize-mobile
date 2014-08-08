@@ -9,6 +9,7 @@
 .popup-buttons .button.button-positive { color: #c41411 !important; }
 
 .bar .right-buttons { background-color: #dd191d; }
+.bar.coverBarActive .right-buttons { background-color: transparent; }
 
 .header-image h1 { background-color: rgba(221, 25, 29, 0.15); }
 
