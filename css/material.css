@@ -17,6 +17,7 @@ p.large { font-size: 17px; font-weight: 300; line-height: 26px; }
 .padding { padding: 20px; }
 .noPaddingBottom { padding-bottom: 0; }
 .rotate90 { -webkit-transform: rotate(90deg); transform: rotate(90deg); }
+.opacity50 { opacity: .5; }
 
 .list { margin-bottom: 0; }
 
@@ -94,7 +95,7 @@ ion-side-menu .list { padding: 0 0 15px; }
 ion-side-menu .list .item { padding: 10px 10px 10px 20px; margin: 0; height: 57px; font-size: 18px; font-weight: 400; }
 ion-side-menu .list .item-divider { font-weight: 400; padding-top: 10px; padding-bottom: 5px; height: 47px }
 ion-side-menu .list .item-divided { padding: 10px 10px 10px 35px; margin: 0; height: 52px; font-weight: 300; }
-ion-side-menu .list .item-input { border-radius: 2px; background-color: rgba(255,255,255,0.9); margin: 10px; margin-bottom: 15px; box-shadow: 0 2px 2px rgba(0,0,0,0.26); height: 52px; }
+ion-side-menu .list .item-input { border-radius: 2px; background-color: white; margin: 10px; margin-bottom: 15px; box-shadow: 0 2px 2px rgba(0,0,0,0.26); height: 52px; }
 ion-side-menu .list .item-input input { font-size: 18px; line-height: 20px; color: rgba(0,0,0,0.55); }
 ion-side-menu .list .item-input input[disabled] { background-color: transparent; }
 ion-side-menu .list .item-input .icon { font-size: 20px; min-width: 24px; color: rgba(0,0,0,0.55); }

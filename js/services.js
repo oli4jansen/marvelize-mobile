@@ -263,23 +263,23 @@ angular.module('marvelize.services', [])
   var listPreferences = {
       characters: {
         listStyle: 'thumbnail',
-        order: 'name',
-        descending: false
+        order: 'modified',
+        descending: true
       },
       series: {
         listStyle: 'thumbnail',
-        order: 'title',
-        descending: false
+        order: 'modified',
+        descending: true
       },
       comics: {
         listStyle: 'thumbnail',
         order: 'modified',
-        descending: false
+        descending: true
       },
       events: {
         listStyle: 'thumbnail',
-        order: 'name',
-        descending: false
+        order: 'modified',
+        descending: true
       }
     };
 

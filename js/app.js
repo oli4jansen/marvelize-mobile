@@ -181,10 +181,16 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
             break;
         }
 
+        // Wat loopjes om de data te verbeteren
         $scope.itemData.associationsAvailable = false;
         for(var i = 0;i<$scope.lists.length;i++) {
           if($scope.itemData[$scope.lists[i].name].available > 0) $scope.itemData.associationsAvailable = true;
         }
+
+        for(var i = 0;i<$scope.itemData.prices.length;i++) {
+          if($scope.itemData[$scope.lists[i].name].available > 0) $scope.itemData.associationsAvailable = true;
+        }
+
 
       }else{
         APIErrorHandler.error(error);
@@ -513,18 +519,21 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
   $scope.getMoreItemsPlease = function() {
     if($scope.items.length && $scope.total > $scope.items.length) {
 
-      $scope.URLParamsObject.offset = $scope.items.length;
+      $rootScope.loading = true;
+      URLParamsObject.offset = $scope.items.length;
 
-      APIDataFactory.getList($scope.category, $scope.URLParamsObject, function(error, result) {
+      APIDataFactory.getList($scope.category, URLParamsObject, function(error, result) {
         if(!error) {
           $scope.items.push.apply($scope.items, APIDataParser.parse($scope.category, result.results));
           $scope.total = result.total;
         }else{
           alert('Error: '+JSON.stringify(error));
         }
+        $rootScope.loading = false;
         $scope.$broadcast('scroll.infiniteScrollComplete');
       });
     }else{
+      $rootScope.loading = false;
       $scope.$broadcast('scroll.infiniteScrollComplete');
     }
   };

@@ -3,6 +3,7 @@
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-nav-buttons side="right">
+  	<button class="button button-icon icon ion-loading-d opactiy50" ng-if="items.length > 0 && loading"></button>
   	<button class="button button-icon icon ion-more rotate90" ng-click="showListPreferences()"></button>
   </ion-nav-buttons>
 
@@ -15,13 +16,13 @@
 
 	<ion-list class="{{listPreferences.listStyle}}" ng-class="{ cozy: listPreferences.listStyle == 'cozy' }">
 		<div ng-click="details(item)" class="item custom-list-item item-thumbnail-left" collection-repeat="item in items" collection-item-width="getItemWidth(item, $index)" collection-item-height="getItemHeight(item, $index)" ng-class="{ first: $index === 0 }">
-			<span class="img" style="background-image: url({{item.image}})"></span>
+			<span class="img" style="background-image: url({{item.image || ''}})"></span>
 			<h2>{{item.title}}</h2>
 			<p>{{item.description}}</p>
 		</div>
 	</ion-list>
 	
-	<ion-infinite-scroll icon="none" on-infinite="getMoreItemsPlease()" distance="20%"></ion-infinite-scroll>
+	<ion-infinite-scroll icon="none" on-infinite="getMoreItemsPlease()" distance="35%"></ion-infinite-scroll>
 
   </ion-content>
 </ion-view>
