@@ -18,6 +18,7 @@
 
 		<!-- DESCRIPTION -->
 		<div ng-if="itemData.description.length > 0" class="padding">
+			<h6>Description</h6>
 			<p class="large" ng-bind-html="itemData.descriptionHTML"></p>
 		</div>
 
@@ -25,14 +26,37 @@
 			<p class="large">This comic is part of the '{{itemData.series.name}}' series.</p>
 		</div>
 
-		<div class="list padding">
-
-		  <a class="item" ng-click="navigate(list.allPath)" ng-repeat="list in lists">
-		    {{itemData[list.name].available}} {{list.name}}
-		    <span class="button-hollow right">All {{list.name}}</span>
-		  </a>
-
+		<!-- ASSOCIATIONS -->
+		<div class="list padding" ng-if="itemData && itemData.associationsAvailable">
+			<h6>Associations</h6>
+			<a class="item" ng-click="navigate(list.allPath)" ng-repeat="list in lists" ng-if="itemData[list.name].available > 0">
+				{{itemData[list.name].available}} {{list.name}}
+				<span class="button-hollow right">All {{list.name}}</span>
+			</a>
 		</div>
 
+		<!-- MOAR INFO -->
+		<div class="list padding" ng-if="category == 'comics' && itemData">
+			<h6>About this comic</h6>
+			<span class="item">Format
+				<span class="right">{{itemData.format}}</span>
+			</span>
+			<span class="item">Page count
+				<span class="right">{{itemData.pageCount}}</span>
+			</span>
+			<a ng-if="itemData.upc" href="http://www.google.com/search?q={{itemData.upc}}" class="item">UPC
+				<span class="right">{{itemData.upc}}</span>
+			</a>
+			<span class="item" ng-repeat="price in itemData.prices">{{price.type}}
+				<span class="right">&dollar;{{price.price}}</span>
+			</span>
+		</div>
+
+		<div class="list padding" ng-if="category == 'events' && itemData">
+			<h6>Start date</h6>
+			<span class="item">{{itemData.start.substr(0, itemData.start.length-9)}}</span>
+			<h6>End date</h6>
+			<span class="item">{{itemData.end.substr(0, itemData.end.length-9)}}</span>
+		</div>
 	</ion-content>
 </ion-view>

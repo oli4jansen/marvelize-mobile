@@ -18,6 +18,8 @@ p.large { font-size: 17px; font-weight: 300; line-height: 26px; }
 .noPaddingBottom { padding-bottom: 0; }
 .rotate90 { -webkit-transform: rotate(90deg); transform: rotate(90deg); }
 
+.list { margin-bottom: 0; }
+
 .bar .ion-more:before { font-size: 28px !important }
 
 .menu-content { box-shadow: 0px 0 15px rgba(0,0,0,0.2); }

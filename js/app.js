@@ -180,6 +180,12 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
               }];
             break;
         }
+
+        $scope.itemData.associationsAvailable = false;
+        for(var i = 0;i<$scope.lists.length;i++) {
+          if($scope.itemData[$scope.lists[i].name].available > 0) $scope.itemData.associationsAvailable = true;
+        }
+
       }else{
         APIErrorHandler.error(error);
       }
