@@ -334,9 +334,7 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
   var oldOrder = 'poep';
 
   // List preferences ophalen uit storage
-  var lP = listPreferences.get();
-  // Juiste categorie selecteren
-  $scope.listPreferences = lP[$scope.category];
+  $scope.listPreferences = listPreferences.get();
 
   // Modal voor list preferences aanmaken
   $ionicModal.fromTemplateUrl('listPreferences.html', {
@@ -412,20 +410,18 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
       Sorteer opties
     */
     var desc = '';
-    if($scope.listPreferences.descending) desc = '-';
+    if($scope.listPreferences[$scope.category].descending) desc = '-';
     // De sorteervolgorde als parameter instellen
-    URLParamsObject.orderBy = desc+$scope.listPreferences.order || 'modified';
+    URLParamsObject.orderBy = desc+$scope.listPreferences[$scope.category].order || 'modified';
 
     // Loading dingen
     $rootScope.startLoading();
 
     // orderOption = als init() geladen is vanuit een listPreferences wijziging
     // order mag geen importance zijn (is geen geldige sorteer optie bij Marvel), dit kan pas nadat we weten hoeveel items er zijn
-    if(!orderOption && $scope.listPreferences && $scope.listPreferences.order == 'importance') {
+    if(!orderOption && $scope.listPreferences && $scope.listPreferences[$scope.category] && $scope.listPreferences[$scope.category].order == 'importance') {
       // List preferences ophalen uit storage
-      var lP = listPreferences.get();
-      // Juiste categorie selecteren en listPreferences resetten
-      $scope.listPreferences = lP[$scope.category];
+      $scope.listPreferences = listPreferences.get();
     }
 
     // Titel instellen
@@ -456,14 +452,14 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
           // De vorige keuze tijdelijk onthouden
           // We willen 'importance' niet opslaan als keuze omdat deze optie niet altijd beschikbaar is 
           // We gebruiken oldOrder om de vorige keuze te onthouden en die opgeslagen te houden
-          oldOrder = $scope.listPreferences.order;
+          oldOrder = $scope.listPreferences[$scope.category].order;
 
           // Tenzij er een andere optie gekozen is, sorteren we nu op importance
           if((orderOption && orderOption == 'importance') || orderOption == undefined || !orderOption) {
             // Sorteren op importance
-            $scope.listPreferences.order = 'importance';
+            $scope.listPreferences[$scope.category].order = 'importance';
             var orderBy = $filter('orderBy');
-            $scope.items = orderBy($scope.items, 'importance', true);
+            $scope.items = orderBy($scope.items, 'importance', $scope.listPreferences[$scope.category].descending);
           }
         }
 
@@ -488,11 +484,11 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
   // Modal met listPreferences sluiten en doorvoeren
   $scope.applyListPreferences = function() {
     // De sorteeroptie die we gaan kiezen heet newOrder
-    var newOrder = $scope.listPreferences.order;
+    var newOrder = $scope.listPreferences[$scope.category].order;
     // Als de keuze importance is, dan slaan we oldOrder op ipv importance
-    if(newOrder == 'importance') $scope.listPreferences.order = oldOrder;
+    if(newOrder == 'importance') $scope.listPreferences[$scope.category].order = oldOrder;
     // List preferences updaten
-    listPreferences.set($scope.category, $scope.listPreferences);
+    listPreferences.set($scope.listPreferences);
     // Lijst opnieuw laden met de keuze als parameter
     $scope.init(newOrder);
     // Verberg opties

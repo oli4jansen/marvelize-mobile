@@ -37,9 +37,9 @@
 			<div class="padding">
 				<form>
 					<h6>Order by</h6>
-					<ion-radio name="order" ng-repeat="orderOptions in possibleOrderOptions" ng-model="listPreferences.order" ng-value="orderOptions.value">{{orderOptions.name}}</ion-radio>
+					<ion-radio name="order" ng-repeat="orderOptions in possibleOrderOptions" ng-model="listPreferences[category].order" ng-value="orderOptions.value">{{orderOptions.name}}</ion-radio>
 
-					<ion-checkbox ng-model="listPreferences.descending" ng-class="{ white: listPreferences.descending, disabled: listPreferences.order == 'importance' }">Descending</ion-checkbox>
+					<ion-checkbox ng-model="listPreferences[category].descending" ng-class="{ white: listPreferences[category].descending }">Descending</ion-checkbox>
 
 					<hr>
 

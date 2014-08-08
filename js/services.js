@@ -280,7 +280,8 @@ angular.module('marvelize.services', [])
         listStyle: 'thumbnail',
         order: 'modified',
         descending: true
-      }
+      },
+      listStyle: 'normal'
     };
 
   // preferences ophalen uit storage
@@ -305,8 +306,8 @@ angular.module('marvelize.services', [])
       window.localStorage['listPreferences'] = JSON.stringify(listPreferences);
       $rootScope.$broadcast('listPreferences.changed', listPreferences);
     },
-    set: function(category, obj) {
-      listPreferences[category] = obj;
+    set: function(obj) {
+      listPreferences = obj;
       this.save();
     }
   }
