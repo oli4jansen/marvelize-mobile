@@ -6,7 +6,6 @@
 
 	<ion-nav-buttons side="right">
 		<button class="button button-icon icon ion-star" ng-class="{ favorite: favorite }" ng-click="toggleFavorite()"></button>
-		<button class="button" ng-click="navigate('details/series/'+seriesID)" ng-if="category == 'comics'">series</button>
 	</ion-nav-buttons>
 
 	<ion-content ng-init="init()" class="transparent-header" delegate-handle="small" on-scroll="scroll()">
@@ -28,8 +27,14 @@
 		</div>
 
 		<!-- ASSOCIATIONS -->
-		<div class="list padding" ng-if="itemData && itemData.associationsAvailable">
+		<div class="list padding" ng-if="itemData && (itemData.associationsAvailable || category == 'comics')">
 			<h6>Associations</h6>
+
+			<a class="item" ng-click="navigate('details/series/'+seriesID)" ng-if="category == 'comics' && seriesID">
+				{{itemData.series.name}}
+				<span class="button-hollow right">Go to series</span>
+			</a>
+
 			<a class="item" ng-click="navigate(list.allPath)" ng-repeat="list in lists" ng-if="itemData[list.name].available > 0">
 				{{itemData[list.name].available}} {{list.name}}
 				<span class="button-hollow right">All {{list.name}}</span>
