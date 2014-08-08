@@ -232,7 +232,7 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
 })
 
 // Controller voor lijsten (wordt gebruikt om te browsen, zoeken en associaties te ontdekken)
-.controller("listController", function($scope, $rootScope, $stateParams, $location, $sce, $filter, $ionicNavBarDelegate, $ionicLoading, $ionicModal, APIDataFactory, APIDataParser, APIErrorHandler){
+.controller("listController", function($scope, $rootScope, $stateParams, $location, $sce, $filter, $ionicNavBarDelegate, $ionicLoading, $ionicModal, listPreferences, APIDataFactory, APIDataParser, APIErrorHandler){
 
 
   // Valid categorien
@@ -242,16 +242,65 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
   // Lege array met items die we gaan laten zien
   $scope.items = [];
 
-  // To do: getListPreferencesFromStorage
-  $scope.listPreferences = {
-    listStyle: 'thumbnail',
-    order: 'name'
-  };
-  var oldListPreferences = $scope.listPreferences;
+  // List preferences ophalen uit storage
+  var lP = listPreferences.get();
+  // Juiste categorie selecteren
+  $scope.listPreferences = lP[$scope.category];
 
   // Object met alle URL parameters die in de request URL voor Marvel moeten komen
   var URLParamsObject = {};
   $scope.filterResultsEmpty = false;
+
+  switch($scope.category) {
+    case 'characters':
+      $scope.possibleOrderOptions = [{
+        value: 'name',
+        name: 'Name'
+      }, {
+        value: 'modified',
+        name: 'Date modified'
+      }];
+      break;
+    case 'series':
+      $scope.possibleOrderOptions = [{
+        value: 'title',
+        name: 'Title'
+      }, {
+        value: 'modified',
+        name: 'Date modified'
+      }, {
+        value: 'startYear',
+        name: 'Start year'
+      }];
+      break;
+    case 'comics':
+      $scope.possibleOrderOptions = [{
+        value: 'title',
+        name: 'Title'
+      }, {
+        value: 'modified',
+        name: 'Date modified'
+      }, {
+        value: 'issueNumber',
+        name: 'Issue number'
+      }, {
+        value: 'onsaleDate',
+        name: 'Onsale date'
+      }];
+      break;
+    case 'events':
+      $scope.possibleOrderOptions = [{
+        value: 'name',
+        name: 'Name'
+      }, {
+        value: 'modified',
+        name: 'Date modified'
+      }, {
+        value: 'startDate',
+        name: 'Start date'
+      }];
+      break;
+  }
 
   $scope.init = function() {
     // De titel die we uiteindelijk gaan gebruiken in de actionBar
@@ -309,8 +358,11 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
       title = 'Searching for \'' + $stateParams.query + '\'';
     }
 
+    var desc = '';
+    if($scope.listPreferences.descending) desc = '-';
+
     // De sorteervolgorde als parameter instellen
-    URLParamsObject.orderBy = $scope.listPreferences.order || 'modified';
+    URLParamsObject.orderBy = desc+$scope.listPreferences.order || 'modified';
 
     // Display loading dingen
     $ionicLoading.show({
@@ -330,11 +382,11 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
         $scope.total = result.total;
 
         // Als het aantal gelaadde items gelijk is aan het totale aantal items:
-        if(result.results.length == result.total) {
+/*        if(result.results.length == result.total) {
           // Sorteren op importance is mogelijk
           var orderBy = $filter('orderBy');
           $scope.items = orderBy($scope.items, 'importance', true);
-        }
+        }*/
 
         // Loading dingen weghalen
         $ionicLoading.hide();
@@ -367,6 +419,10 @@ angular.module('marvelize', ['ionic', 'marvelize.services', 'marvelize.filters',
 
   // Modal met listPreferences sluiten en doorvoeren
   $scope.applyListPreferences = function() {
+    // List preferences updaten
+    listPreferences.set($scope.category, $scope.listPreferences);
+    // En vervolgens opslaan in storage
+    listPreferences.save();
     // Lijst opnieuw laden
     $scope.init();
     // Verberg opties

@@ -92,7 +92,7 @@ ion-side-menu .list { padding: 0 0 15px; }
 ion-side-menu .list .item { padding: 10px 10px 10px 20px; margin: 0; height: 57px; font-size: 18px; font-weight: 400; }
 ion-side-menu .list .item-divider { font-weight: 400; padding-top: 10px; padding-bottom: 5px; height: 47px }
 ion-side-menu .list .item-divided { padding: 10px 10px 10px 35px; margin: 0; height: 52px; font-weight: 300; }
-ion-side-menu .list .item-input { border-radius: 2px; background-color: rgba(255,255,255,0.85); margin: 10px; margin-bottom: 15px; box-shadow: 0 2px 2px rgba(0,0,0,0.26); height: 52px; }
+ion-side-menu .list .item-input { border-radius: 2px; background-color: rgba(255,255,255,0.9); margin: 10px; margin-bottom: 15px; box-shadow: 0 2px 2px rgba(0,0,0,0.26); height: 52px; }
 ion-side-menu .list .item-input input { font-size: 18px; line-height: 20px; color: rgba(0,0,0,0.55); }
 ion-side-menu .list .item-input input[disabled] { background-color: transparent; }
 ion-side-menu .list .item-input .icon { font-size: 20px; min-width: 24px; color: rgba(0,0,0,0.55); }
@@ -274,11 +274,55 @@ ion-side-menu .list .item-input .icon { font-size: 20px; min-width: 24px; color:
 		}
 
 /*
-ion-radio
+ion-radio + ion-checkbox
 */
 
+.item-checkbox { padding: 0; }
+
 .item-radio .item-content { padding: 10px 20px 10px 40px; }
+.item-checkbox .item-content { padding: 10px 20px 10px 60px }
 .item-radio .item-content span { color: #666; }
+
+.item-checkbox .checkbox { left: 0; right: auto; }
+
+.checkbox-icon { width: 40px; margin-left: 3px }
+
+.checkbox-icon:before {
+	display: block;
+	content: '';
+	border: 0 !important;
+	background: #a0a0a0;
+	width: 19px;
+	height: 19px;
+	margin: 5px 0;
+	z-index: 9999;
+}
+
+.checkbox-icon:after {
+	content: '';
+	display: block;
+	z-index: 0;
+	height: 0;
+	width: 30px;
+	transition: none;
+	transform: none;
+	position: absolute;
+	top: 9px;
+	left: 4px;
+	border: 0;
+	border-top: 1px solid #a0a0a0;
+	opacity: 1;
+}
+
+.checkbox input:checked:before, .checkbox input:checked + .checkbox-icon:before {
+	margin-left: 20px;
+	border-color: #5677fc !important;
+	background-color: #5677fc !important;
+	border-color: #fff !important;
+	background-color: #fff !important;
+}
+.checkbox input:checked + .checkbox-icon:after { border-color: #fff !important; }
+
 
 .item-radio .radio-icon { visibility: visible !important; }
 .item-radio input ~ .radio-icon:before {
@@ -311,17 +355,23 @@ dark theme
 }
 .dark-theme ion-header-bar .title { color: white; left: 10px; }
 
-.dark-theme .item-radio .item-content span { color: #999; }
+.dark-theme .item-radio .item-content span,
+.dark-theme .item-checkbox .item-content span { color: #999; }
+
+.dark-theme .white .item-content span { color: #fff; }
 
 .dark-theme .item-radio input ~ .radio-icon:before {
 	background: transparent;
 	border-radius: 100px;
 	border: 2px solid #444444;
-	box-shadow: 0 0 0 3px rgba(255,255,255,0.5);
+	box-shadow: 0 0 0 3px #a0a0a0;
 	margin: 3px 0;
 }
 .dark-theme .item-radio input:checked ~ .radio-icon:before { background: white; box-shadow: 0 0 0 3px white; }
-.dark-theme .item-radio input:checked ~ .item-content span { color: white; }
+
+.dark-theme .item-radio input:checked ~ .item-content span,
+.dark-theme .item-checkbox input:checked ~ .item-content span { color: white; }
+
 .dark-theme hr { border-color: #666; }
 
 .dark-theme .bar .button.button-blue {

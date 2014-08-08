@@ -216,19 +216,7 @@ angular.module('marvelize.services', [])
   // Favorites ophalen uit storage
   try {
     favorites = JSON.parse(window.localStorage['favorites']);
-  } catch(e) { }
-
-  // Als er nog steeds niks is, zetten we de Hulk in de favorites
-/*  if(!favorites.length) {
-    favorites = [{
-      id: 1009351,
-      title: 'Hulk',
-      type: 'characters',
-      image: 'http://i.annihil.us/u/prod/marvel/i/mg/5/a0/538615ca33ab0/landscape_amazing.jpg'
-    }];
-    // Opslaan
-    window.localStorage['favorites'] = JSON.stringify(favorites);
-  }*/
+  } catch(e) {  }
 
   var obj = {
     // Favorites ophalen
@@ -262,6 +250,56 @@ angular.module('marvelize.services', [])
       var index = favorites.indexOf(item);
       favorites.splice(index, 1);
       this.save();
+    }
+  }
+
+  // Save the settings to be safe
+  obj.save();
+  return obj;
+})
+
+.factory('listPreferences', function($rootScope) {
+  // Beginnen met een lege array
+  var listPreferences = {
+      characters: {
+        listStyle: 'thumbnail',
+        order: 'name',
+        descending: false
+      },
+      series: {
+        listStyle: 'thumbnail',
+        order: 'title',
+        descending: false
+      },
+      comics: {
+        listStyle: 'thumbnail',
+        order: 'modified',
+        descending: false
+      },
+      events: {
+        listStyle: 'thumbnail',
+        order: 'name',
+        descending: false
+      }
+    };
+
+  // Favorites ophalen uit storage
+  try {
+    listPreferences = JSON.parse(window.localStorage['listPreferences']);
+  } catch(e) {  }
+
+  var obj = {
+    // listPreferences ophalen
+    get: function() {
+      return listPreferences;
+    },
+    // listPreferences opslaan in localStorage
+    save: function() {
+      window.localStorage['listPreferences'] = JSON.stringify(listPreferences);
+      $rootScope.$broadcast('listPreferences.changed', listPreferences);
+    },
+    set: function(category, obj) {
+      listPreferences[category] = obj;
     }
   }
 
